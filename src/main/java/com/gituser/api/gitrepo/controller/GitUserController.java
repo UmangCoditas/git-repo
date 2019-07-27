@@ -47,7 +47,7 @@ public class GitUserController {
         return repositoryList;
     }
 
-    public List<GitHubUser> getGitHubRepository(String userName, boolean filterOwnerRepos) {
+    private List<GitHubUser> getGitHubRepository(String userName, boolean filterOwnerRepos) {
         log.info("Fetch GitHub projects of user " + userName);
         String gitHubURL = environment.getProperty("GITHUB_BASE_URL") + userName + "/repos";
         HttpGet request = repositoryService.generateRequestUri(gitHubURL);
