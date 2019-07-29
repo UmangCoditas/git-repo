@@ -32,17 +32,14 @@ public class GitUserController {
 
 
     @GetMapping("/{userName}")
-    public List<Repository> getRepositoryList(@PathVariable String userName, @RequestParam(value = "filter", required = false, defaultValue = "false") boolean filterOwnerRepos) {
+    public List<Repository> getRepositoryList(@PathVariable String userName, @RequestParam(value = "repositoryOwner", required = false, defaultValue = "false") boolean filterOwnerRepos) {
         List<Repository> repositoryList = new ArrayList<>();
+
         List<GitHubUser> gitHubRepositoryList = getGitHubRepository(userName, filterOwnerRepos);
-        for (GitHubUser gitHubUser : gitHubRepositoryList) {
-            repositoryList.add(new Repository(gitHubUser.getRepositoryId(), "GitHub", gitHubUser.getRepositoryName()));
-        }
+        gitHubRepositoryList.parallelStream().forEach(gitHubUser -> repositoryList.add(new Repository(gitHubUser.getRepositoryId(), "GitHub", gitHubUser.getRepositoryName())));
 
         List<GitLabUser> gitLabUserList = getGitLabProject(userName, filterOwnerRepos);
-        for (GitLabUser gitLabUser : gitLabUserList) {
-            repositoryList.add(new Repository(gitLabUser.getId(), "GitLab", gitLabUser.getRepositoryName()));
-        }
+        gitLabUserList.parallelStream().forEach(gitLabUser -> repositoryList.add(new Repository(gitLabUser.getId(), "GitLab", gitLabUser.getRepositoryName())));
 
         return repositoryList;
     }

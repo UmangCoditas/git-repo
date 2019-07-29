@@ -9,11 +9,13 @@ public class GitHubUser {
     private boolean publicRepository;
     private String loginId;
     private Integer repositoryId;
+    private boolean forked;
 
-    public GitHubUser(String repositoryName, String loginId, boolean publicRepository,Integer repositoryId) {
+    public GitHubUser(String repositoryName, String loginId, boolean publicRepository,Integer repositoryId,boolean forked) {
         this.repositoryName = repositoryName;
         this.loginId = loginId;
         this.publicRepository = publicRepository;
         this.repositoryId = repositoryId;
+        this.forked = forked;
     }
 }

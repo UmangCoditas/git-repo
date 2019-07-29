@@ -64,7 +64,7 @@ public class GitUserControllerTest {
         gitHubRepositoryList.add(gitHubRepository);
 
         List<GitHubUser> gitHubUserList = new ArrayList<>();
-        gitHubUserList.add(new GitHubUser("eshop", "UmangCoditas", true, 197175868));
+        gitHubUserList.add(new GitHubUser("eshop", "UmangCoditas", true, 197175868, false));
 
         List<GitLabUser> gitLabUserList = new ArrayList<>();
         gitLabUserList.add(new GitLabUser("ci-test", 13518460));

@@ -68,12 +68,10 @@ public class RepositoryServiceImpl implements RepositoryService {
     public List<GitHubUser> getGitHubUserDetails(List<GitHubRepository> userRepositoryList, boolean filter, String userName) {
         log.info("Filter passed is ", filter);
         List<GitHubUser> gitHubUserList = new ArrayList<>();
-        for (GitHubRepository gitHubRepository : userRepositoryList) {
-            gitHubUserList.add(new GitHubUser(gitHubRepository.getName(), gitHubRepository.getOwner().getLogin(), !gitHubRepository.getPrivate(), gitHubRepository.getId()));
-        }
+        userRepositoryList.parallelStream().forEach(gitHubRepository -> gitHubUserList.add(new GitHubUser(gitHubRepository.getName(), gitHubRepository.getOwner().getLogin(), !gitHubRepository.getPrivate(), gitHubRepository.getId(),gitHubRepository.getFork())));
         if (filter) {
             log.info("Filter Repository ownership", filter);
-            return gitHubUserList.parallelStream().filter(gitHubUser -> gitHubUser.getLoginId().equalsIgnoreCase(userName))
+            return gitHubUserList.parallelStream().filter(gitHubUser -> !gitHubUser.isForked())
                     .collect(Collectors.toList());
         }
         return gitHubUserList;
@@ -110,9 +108,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     public List<GitLabUser> getGitLabUserDetails(List<GitLabProject> gitLabProjectList, boolean filter, Integer userId) {
         log.info("Filter passed is ", filter);
         List<GitLabUser> gitlabUserList = new ArrayList<>();
-        for (GitLabProject gitLabProject : gitLabProjectList) {
-            gitlabUserList.add(new GitLabUser(gitLabProject.getName(), gitLabProject.getId()));
-        }
+        gitLabProjectList.parallelStream().forEach(gitLabProject -> gitlabUserList.add(new GitLabUser(gitLabProject.getName(), gitLabProject.getId())));
         return gitlabUserList;
     }
 
